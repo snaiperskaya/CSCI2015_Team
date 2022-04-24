@@ -6,7 +6,7 @@ import java.awt.Color;
 
 /**
  * A simple predator-prey simulator, based on a rectangular field containing 
- * rabbits and foxes.
+ * grass and trees.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29
@@ -18,14 +18,20 @@ public class Simulator
     private static final int DEFAULT_WIDTH = 12;
     // The default depth of the grid.
     private static final int DEFAULT_DEPTH = 12;
-    // The probability that a fox will be created in any given grid position.
-    private static final double FOX_CREATION_PROBABILITY = 0.25;
-    // The probability that a rabbit will be created in any given position.
-    private static final double RABBIT_CREATION_PROBABILITY = 0.5;    
+    // The probability that a tree will be created in any given grid position.
+    private static final double TREE_CREATION_PROBABILITY = 0.25;
+    // The probability that a grass will be created in any given position.
+    private static final double GRASS_CREATION_PROBABILITY = 0.5;    
+    // The probability that a grass will be created in any given position.
+    private static final double DEER_CREATION_PROBABILITY = 0.5; 
+    // The probability that a grass will be created in any given position.
+    private static final double FIRE_CREATION_PROBABILITY = 0.5; 
 
     // Lists of animals in the field.
-    private List<Rabbit> rabbits;
-    private List<Fox> foxes;
+    private List<Grass> grasses;
+    private List<Tree> trees;
+    private List<Deer> deers;
+    private List<Fire> fires;
     // The current state of the field.
     private Field field;
     // The current step of the simulation.
@@ -55,14 +61,16 @@ public class Simulator
             width = DEFAULT_WIDTH;
         }
         
-        rabbits = new ArrayList<>();
-        foxes = new ArrayList<>();
+        grasses = new ArrayList<>();
+        trees = new ArrayList<>();
+        fires = new ArrayList<>();
+        deers = new ArrayList<>();
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Rabbit.class, Color.ORANGE);
-        view.setColor(Fox.class, Color.BLUE);
+        view.setColor(Grass.class, Color.ORANGE);
+        view.setColor(Tree.class, Color.BLUE);
         
         // Setup a valid starting point.
         reset();
@@ -92,37 +100,59 @@ public class Simulator
     
     /**
      * Run the simulation from its current state for a single step. Iterate
-     * over the whole field updating the state of each fox and rabbit.
+     * over the whole field updating the state of each tree and grass.
      */
     public void simulateOneStep()
     {
         step++;
 
-        // Provide space for newborn rabbits.
-        List<Rabbit> newRabbits = new ArrayList<>();        
-        // Let all rabbits act.
-        for(Iterator<Rabbit> it = rabbits.iterator(); it.hasNext(); ) {
-            Rabbit rabbit = it.next();
-            rabbit.run(newRabbits);
-            if(! rabbit.isAlive()) {
+        // Provide space for newborn grass.
+        List<Grass> newGrasses = new ArrayList<>();        
+        // Let all grass act.
+        for(Iterator<Grass> it = grasses.iterator(); it.hasNext(); ) {
+            Grass grass = it.next();
+            grass.run(newGrasses);
+            if(! grass.isAlive()) {
                 it.remove();
             }
         }
         
-        // Provide space for newborn foxes.
-        List<Fox> newFoxes = new ArrayList<>();        
-        // Let all foxes act.
-        for(Iterator<Fox> it = foxes.iterator(); it.hasNext(); ) {
-            Fox fox = it.next();
-            fox.hunt(newFoxes);
-            if(! fox.isAlive()) {
+        // Provide space for newborn trees.
+        List<Tree> newTrees = new ArrayList<>();        
+        // Let all trees act.
+        for(Iterator<Tree> it = trees.iterator(); it.hasNext(); ) {
+            Tree tree = it.next();
+            tree.run(newTrees);
+            if(! tree.isAlive()) {
                 it.remove();
             }
         }
         
-        // Add the newly born foxes and rabbits to the main lists.
-        rabbits.addAll(newRabbits);
-        foxes.addAll(newFoxes);
+        List<Fire> newFires = new ArrayList<>();        
+        // Let all trees act.
+        for(Iterator<Fire> it = fires.iterator(); it.hasNext(); ) {
+            Fire fire = it.next();
+            fire.hunt(newFires);
+            if(! fire.isAlive()) {
+                it.remove();
+            }
+        }
+        
+        List<Deer> newDeers = new ArrayList<>();        
+        // Let all trees act.
+        for(Iterator<Deer> it = deers.iterator(); it.hasNext(); ) {
+            Deer deer = it.next();
+            deer.hunt(newDeers);
+            if(! deer.isAlive()) {
+                it.remove();
+            }
+        }
+        
+        // Add the newly born trees and grass to the main lists.
+        grasses.addAll(newGrasses);
+        trees.addAll(newTrees);
+        deers.addAll(newDeers);
+        fires.addAll(newFires);
 
         view.showStatus(step, field);
     }
@@ -133,8 +163,10 @@ public class Simulator
     public void reset()
     {
         step = 0;
-        rabbits.clear();
-        foxes.clear();
+        grasses.clear();
+        trees.clear();
+        deers.clear();
+        fires.clear();
         populate();
         
         // Show the starting state in the view.
@@ -142,7 +174,7 @@ public class Simulator
     }
     
     /**
-     * Randomly populate the field with foxes and rabbits.
+     * Randomly populate the field with trees and grass.
      */
     private void populate()
     {
@@ -150,15 +182,25 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= FOX_CREATION_PROBABILITY) {
+                if(rand.nextDouble() <= TREE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Fox fox = new Fox(true, field, location);
-                    foxes.add(fox);
+                    Tree tree = new Tree(true, field, location);
+                    trees.add(tree);
                 }
-                else if(rand.nextDouble() <= RABBIT_CREATION_PROBABILITY) {
+                else if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Rabbit rabbit = new Rabbit(true, field, location);
-                    rabbits.add(rabbit);
+                    Grass grass = new Grass(true, field, location);
+                    grasses.add(grass);
+                }
+                else if(rand.nextDouble() <= DEER_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Deer deer = new Deer(true, field, location);
+                    deers.add(deer);
+                }
+                else if(rand.nextDouble() <= FIRE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Fire fire = new Fire(true, field, location);
+                    fires.add(fire);
                 }
                 // else leave the location empty.
             }

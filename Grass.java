@@ -3,12 +3,12 @@ import java.util.Random;
 
 /**
  * A simple model of a rabbit.
- * Rabbits age, move, breed, and die.
+ * Grasses age, move, breed, and die.
  * 
  * @author David J. Barnes and Michael Kölling
  * @version 2016.02.29
  */
-public class Rabbit
+public class Grass
 {
     // Characteristics shared by all rabbits (class variables).
 
@@ -42,7 +42,7 @@ public class Rabbit
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Rabbit(boolean randomAge, Field field, Location location)
+    public Grass(boolean randomAge, Field field, Location location)
     {
         age = 0;
         alive = true;
@@ -56,13 +56,13 @@ public class Rabbit
     /**
      * This is what the rabbit does most of the time - it runs 
      * around. Sometimes it will breed or die of old age.
-     * @param newRabbits A list to return newly born rabbits.
+     * @param newGrasses A list to return newly born rabbits.
      */
-    public void run(List<Rabbit> newRabbits)
+    public void run(List<Grass> newGrasses)
     {
         incrementAge();
         if(alive) {
-            giveBirth(newRabbits);            
+            giveBirth(newGrasses);            
             // Try to move into a free location.
             Location newLocation = field.freeAdjacentLocation(location);
             if(newLocation != null) {
@@ -135,9 +135,9 @@ public class Rabbit
     /**
      * Check whether or not this rabbit is to give birth at this step.
      * New births will be made into free adjacent locations.
-     * @param newRabbits A list to return newly born rabbits.
+     * @param newGrasses A list to return newly born rabbits.
      */
-    private void giveBirth(List<Rabbit> newRabbits)
+    private void giveBirth(List<Grass> newGrasses)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -145,8 +145,8 @@ public class Rabbit
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Rabbit young = new Rabbit(false, field, loc);
-            newRabbits.add(young);
+            Grass young = new Grass(false, field, loc);
+            newGrasses.add(young);
         }
     }
         
