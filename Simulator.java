@@ -69,8 +69,10 @@ public class Simulator
 
         // Create a view of the state of each location in the field.
         view = new SimulatorView(depth, width);
-        view.setColor(Grass.class, Color.ORANGE);
+        view.setColor(Deer.class, Color.ORANGE);
         view.setColor(Tree.class, Color.BLUE);
+        view.setColor(Grass.class, Color.GREEN);
+        view.setColor(Fire.class, Color.RED);
         
         // Setup a valid starting point.
         reset();
