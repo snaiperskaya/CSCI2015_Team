@@ -68,7 +68,7 @@ public class Simulator
         field = new Field(depth, width);
 
         // Create a view of the state of each location in the field.
-        view = new SimulatorView(depth, width);
+        view = new SimulatorView(depth, width, this);
         view.setColor(Deer.class, Color.ORANGE);
         view.setColor(Tree.class, Color.BLUE);
         view.setColor(Grass.class, Color.GREEN);
@@ -98,14 +98,6 @@ public class Simulator
             simulateOneStep();
             // delay(60);   // uncomment this to run more slowly
         }
-    }
-    
-    /**
-     * Here's hoping an accessor method will work...
-     */
-    public void nextStep()
-    {
-        simulateOneStep();
     }
     
     /**
@@ -192,12 +184,8 @@ public class Simulator
         field.clear();
         for(int row = 0; row < field.getDepth(); row++) {
             for(int col = 0; col < field.getWidth(); col++) {
-                if(rand.nextDouble() <= TREE_CREATION_PROBABILITY) {
-                    Location location = new Location(row, col);
-                    Tree tree = new Tree(true, field, location);
-                    trees.add(tree);
-                }
-                else if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
+                
+                if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
                     Grass grass = new Grass(true, field, location);
                     grasses.add(grass);
@@ -206,6 +194,11 @@ public class Simulator
                     Location location = new Location(row, col);
                     Deer deer = new Deer(true, field, location);
                     deers.add(deer);
+                }
+                else if(rand.nextDouble() <= TREE_CREATION_PROBABILITY) {
+                    Location location = new Location(row, col);
+                    Tree tree = new Tree(true, field, location);
+                    trees.add(tree);
                 }
                 else if(rand.nextDouble() <= FIRE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
