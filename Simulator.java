@@ -101,6 +101,14 @@ public class Simulator
     }
     
     /**
+     * Here's hoping an accessor method will work...
+     */
+    public void nextStep()
+    {
+        simulateOneStep();
+    }
+    
+    /**
      * Run the simulation from its current state for a single step. Iterate
      * over the whole field updating the state of each tree and grass.
      */
