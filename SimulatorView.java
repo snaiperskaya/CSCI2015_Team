@@ -30,6 +30,8 @@ public class SimulatorView extends JFrame
     
     //Declare a button variable -DC
     JButton button = new JButton("Next Step");
+    //Declares a Simulator variable called simulation -DC
+    private Simulator simulation;
         
     // A map for storing colors for participants in the simulation
     private Map<Class, Color> colors;
@@ -70,11 +72,13 @@ public class SimulatorView extends JFrame
     
     /**
      * Adds a trigger for the button to perform an action.
+     * Also adds an action to perform.
      */
     public void actionPerformed(ActionEvent e)
     {
         if (e.getSource() == button){
-
+            simulation = new Simulator();
+            simulation.simulateOneStep();
         }
     }
     
