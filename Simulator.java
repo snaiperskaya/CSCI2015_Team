@@ -187,7 +187,7 @@ public class Simulator
                 
                 if(rand.nextDouble() <= GRASS_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Grass grass = new Grass(true, field, location);
+                    Grass grass = new Grass(field, location);
                     grasses.add(grass);
                 }
                 else if(rand.nextDouble() <= DEER_CREATION_PROBABILITY) {
@@ -197,7 +197,7 @@ public class Simulator
                 }
                 else if(rand.nextDouble() <= TREE_CREATION_PROBABILITY) {
                     Location location = new Location(row, col);
-                    Tree tree = new Tree(true, field, location);
+                    Tree tree = new Tree(field, location);
                     trees.add(tree);
                 }
                 else if(rand.nextDouble() <= FIRE_CREATION_PROBABILITY) {

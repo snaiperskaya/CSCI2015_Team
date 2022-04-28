@@ -14,7 +14,7 @@ public class Fire
     // Characteristics shared by all fires (class variables).
     
     // The age at which a fire can start to breed.
-    private static final int BREEDING_AGE = 15;
+    private static final int BREEDING_AGE = 0;
     // The age to which a fire can live.
     private static final int MAX_AGE = 150;
     // The likelihood of a fire breeding.
@@ -23,7 +23,10 @@ public class Fire
     private static final int MAX_LITTER_SIZE = 2;
     // The food value of a single grass. In effect, this is the
     // number of steps a fire can go before it has to eat again.
-    private static final int GRASS_FOOD_VALUE = 9;
+    private static final int GRASS_FOOD_VALUE = 8;
+    
+    private static final double GRASS_KILL = 0.75;
+    private static final double TREE_KILL = 0.60;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -161,8 +164,16 @@ public class Fire
             Object animal = field.getObjectAt(where);
             if(animal instanceof Grass) {
                 Grass grass = (Grass) animal;
-                if(grass.isAlive()) { 
+                if(grass.isAlive() && rand.nextDouble() <= GRASS_KILL) { 
                     grass.setDead();
+                    foodLevel = GRASS_FOOD_VALUE;
+                    return where;
+                }
+            }
+            if(animal instanceof Tree) {
+                Tree tree = (Tree) animal;
+                if(tree.isAlive() && rand.nextDouble() <= TREE_KILL) { 
+                    tree.setDead();
                     foodLevel = GRASS_FOOD_VALUE;
                     return where;
                 }

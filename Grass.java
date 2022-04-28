@@ -13,13 +13,11 @@ public class Grass
     // Characteristics shared by all rabbits (class variables).
 
     // The age at which a rabbit can start to breed.
-    private static final int BREEDING_AGE = 5;
-    // The age to which a rabbit can live.
-    private static final int MAX_AGE = 40;
+    private static final int BREEDING_AGE = 0;
     // The likelihood of a rabbit breeding.
-    private static final double BREEDING_PROBABILITY = 0.12;
+    private static final double BREEDING_PROBABILITY = 0.50;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 4;
+    private static final int MAX_LITTER_SIZE = 10;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
@@ -42,15 +40,12 @@ public class Grass
      * @param field The field currently occupied.
      * @param location The location within the field.
      */
-    public Grass(boolean randomAge, Field field, Location location)
+    public Grass(Field field, Location location)
     {
         age = 0;
         alive = true;
         this.field = field;
         setLocation(location);
-        if(randomAge) {
-            age = rand.nextInt(MAX_AGE);
-        }
     }
     
     /**
@@ -127,9 +122,6 @@ public class Grass
     private void incrementAge()
     {
         age++;
-        if(age > MAX_AGE) {
-            setDead();
-        }
     }
     
     /**
@@ -145,7 +137,7 @@ public class Grass
         int births = breed();
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
-            Grass young = new Grass(false, field, loc);
+            Grass young = new Grass(field, loc);
             newGrasses.add(young);
         }
     }

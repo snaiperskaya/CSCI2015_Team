@@ -16,14 +16,14 @@ public class Deer
     // The age at which a deer can start to breed.
     private static final int BREEDING_AGE = 15;
     // The age to which a deer can live.
-    private static final int MAX_AGE = 150;
+    private static final int MAX_AGE = 80;
     // The likelihood of a deer breeding.
-    private static final double BREEDING_PROBABILITY = 0.08;
+    private static final double BREEDING_PROBABILITY = 0.25;
     // The maximum number of births.
-    private static final int MAX_LITTER_SIZE = 2;
+    private static final int MAX_LITTER_SIZE = 1;
     // The food value of a single grass. In effect, this is the
     // number of steps a deer can go before it has to eat again.
-    private static final int GRASS_FOOD_VALUE = 9;
+    private static final int GRASS_FOOD_VALUE = 8;
     // A shared random number generator to control breeding.
     private static final Random rand = Randomizer.getRandom();
     
