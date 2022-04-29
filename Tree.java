@@ -53,11 +53,11 @@ public class Tree
      * around. Sometimes it will breed or die of old age.
      * @param newRabbits A list to return newly born rabbits.
      */
-    public void run(List<Tree> newRabbits)
+    public void run(List<Tree> newTrees)
     {
         incrementAge();
         if(alive) {
-            giveBirth(newRabbits);            
+            giveBirth(newTrees);            
             // Try to move into a free location.
             Location newLocation = field.freeAdjacentLocation(location);
             if(newLocation != null) {
@@ -129,7 +129,7 @@ public class Tree
      * New births will be made into free adjacent locations.
      * @param newRabbits A list to return newly born rabbits.
      */
-    private void giveBirth(List<Tree> newRabbits)
+    private void giveBirth(List<Tree> newTrees)
     {
         // New rabbits are born into adjacent locations.
         // Get a list of adjacent free locations.
@@ -138,7 +138,7 @@ public class Tree
         for(int b = 0; b < births && free.size() > 0; b++) {
             Location loc = free.remove(0);
             Tree young = new Tree(field, loc);
-            newRabbits.add(young);
+            newTrees.add(young);
         }
     }
         
